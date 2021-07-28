@@ -31,8 +31,8 @@ class Location {
 
   final String title;
   final LocationType locationType;
-  @JsonKey(name: 'latt_long')
-  @LatLongConverter()
+  @JsonKey(name: 'latt_long') //different json key from field name
+  @LatLongConverter() //Converter for json string value into LatLng object
   final LatLng latLng;
   final int woeid;
 }
