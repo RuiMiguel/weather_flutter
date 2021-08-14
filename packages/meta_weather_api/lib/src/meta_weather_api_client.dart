@@ -3,6 +3,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:meta_weather_api/meta_weather_api.dart';
 
+class LocationRequestFailure implements Exception {}
+
+class LocationNotFoundFailure implements Exception {}
+
+class WeatherRequestFailure implements Exception {}
+
+class WeatherNotFoundFailure implements Exception {}
+
 class MetaWeatherApiClient {
   MetaWeatherApiClient({http.Client? httpClient})
       : _httpClient = httpClient ?? http.Client();
@@ -20,12 +28,16 @@ class MetaWeatherApiClient {
     final response = await _httpClient.get(request);
 
     if (response.statusCode != 200) {
-      throw Exception();
+      throw LocationRequestFailure();
     }
 
-    final json = jsonDecode(response.body);
+    final json = jsonDecode(response.body) as List;
 
-    return Location.fromJson(json);
+    if (json.isEmpty) {
+      throw LocationNotFoundFailure();
+    }
+
+    return Location.fromJson(json.first as Map<String, dynamic>);
   }
 
   /// Fetches [Weather] for a given [locationId].
@@ -37,11 +49,21 @@ class MetaWeatherApiClient {
     final response = await _httpClient.get(request);
 
     if (response.statusCode != 200) {
-      throw Exception();
+      throw WeatherRequestFailure();
     }
 
-    final json = jsonDecode(response.body);
+    final json = jsonDecode(response.body) as Map<String, dynamic>;
 
-    return Weather.fromJson(json);
+    if (json.isEmpty) {
+      throw WeatherNotFoundFailure();
+    }
+
+    final weatherJson = json['consolidated_weather'] as List;
+
+    if (weatherJson.isEmpty) {
+      throw WeatherNotFoundFailure();
+    }
+
+    return Weather.fromJson(weatherJson.first as Map<String, dynamic>);
   }
 }

@@ -26,6 +26,10 @@ enum WeatherState {
   unknown,
 }
 
+extension WheaterStateX on WeatherState {
+  String? get abbr => _$WeatherStateEnumMap[this];
+}
+
 enum WindDirectionCompass {
   @JsonValue('N')
   north,
