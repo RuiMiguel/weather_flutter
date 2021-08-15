@@ -166,6 +166,21 @@ void main() {
         );
       });
 
+      test(
+          'throws WeatherNotFoundFailure on empty consolidated_weather response',
+          () async {
+        final response = MockResponse();
+
+        when(() => httpClient.get(any())).thenAnswer((_) async => response);
+        when(() => response.statusCode).thenReturn(200);
+        when(() => response.body).thenReturn('{"consolidated_weather": []}');
+
+        await expectLater(
+          metaWeatherApiClient.getWeather(locationId),
+          throwsA(isA<WeatherNotFoundFailure>()),
+        );
+      });
+
       test('returns Weather on valid response', () async {
         final response = MockResponse();
 
