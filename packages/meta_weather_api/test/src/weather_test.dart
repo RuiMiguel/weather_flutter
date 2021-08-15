@@ -1,4 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:meta_weather_api/meta_weather_api.dart';
 import 'package:test/test.dart';
 
@@ -25,11 +24,17 @@ void main() {
             'visibility': 11.037727173307882,
             'predictability': 73
           }),
-          isA<Weather>().having(
-            (w) => w.weatherStateAbbr,
-            'abbr',
-            WeatherState.unknown,
-          ),
+          isA<Weather>()
+              .having(
+                (w) => w.weatherStateAbbr,
+                'abbr',
+                WeatherState.unknown,
+              )
+              .having(
+                (w) => w.windDirectionCompass,
+                'wind',
+                WindDirectionCompass.unknown,
+              ),
         );
       });
     });
