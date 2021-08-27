@@ -20,14 +20,13 @@ void main() {
 
     group('LatLongConverter', () {
       test('toJson returns LatLng into json', () {
-        final json = const LatLongConverter().toJson(
-          LatLng(
-            latitude: -34.75,
-            longitude: 83.28,
-          ),
-        );
         expect(
-          json,
+          const LatLongConverter().toJson(
+            LatLng(
+              latitude: -34.75,
+              longitude: 83.28,
+            ),
+          ),
           equals('-34.75,83.28'),
         );
       });
