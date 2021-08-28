@@ -166,9 +166,8 @@ void main() {
         );
       });
 
-      test(
-          'throws WeatherNotFoundFailure on empty consolidated_weather response',
-          () async {
+      test('''throws WeatherNotFoundFailure on empty 
+          consolidated_weather response''', () async {
         final response = MockResponse();
 
         when(() => httpClient.get(any())).thenAnswer((_) async => response);

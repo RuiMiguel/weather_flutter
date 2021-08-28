@@ -122,7 +122,8 @@ void main() {
         );
       });
 
-      //don't understand why coverage needs lightCloud and heavyCloud to cover 100%
+      //don't understand why coverage needs
+      //lightCloud and heavyCloud to cover 100%
       test('returns correct weatheron success (lightCloud)', () async {
         final location = MockLocation();
         final weather = MockWeather();
