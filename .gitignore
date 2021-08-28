@@ -55,7 +55,6 @@ linked_*.ds
 unlinked.ds
 unlinked_spec.ds
 .fvm/
-pubspec.lock
 
 # Android related
 **/android/**/gradle-wrapper.jar
