@@ -23,7 +23,7 @@ class WeatherCubit extends HydratedCubit<WeatherState> {
         await _weatherRepository.getWeather(city),
       );
 
-      final units = state.temperatureUnits;
+      final units = state.weather.temperature.units;
       final temperature = units.isFahrenheit
           ? weather.temperature.toFahrenheit
           : weather.temperature;
@@ -32,7 +32,6 @@ class WeatherCubit extends HydratedCubit<WeatherState> {
         state.copyWith(
           status: WeatherStatus.success,
           weather: weather.copyWith(temperature: temperature),
-          temperatureUnits: units,
         ),
       );
     } on Exception {
@@ -49,7 +48,7 @@ class WeatherCubit extends HydratedCubit<WeatherState> {
         await _weatherRepository.getWeather(state.weather.location),
       );
 
-      final units = state.temperatureUnits;
+      final units = state.weather.temperature.units;
       final temperature = units.isFahrenheit
           ? weather.temperature.toFahrenheit
           : weather.temperature;
@@ -58,7 +57,6 @@ class WeatherCubit extends HydratedCubit<WeatherState> {
         state.copyWith(
           status: WeatherStatus.success,
           weather: weather.copyWith(temperature: temperature),
-          temperatureUnits: units,
         ),
       );
     } on Exception {
@@ -67,12 +65,21 @@ class WeatherCubit extends HydratedCubit<WeatherState> {
   }
 
   void toggleUnits() {
-    final units = state.temperatureUnits.isFahrenheit
+    final units = state.weather.temperature.units.isFahrenheit
         ? TemperatureUnits.celsius
         : TemperatureUnits.fahrenheit;
 
     if (!state.status.isSuccess) {
-      emit(state.copyWith(temperatureUnits: units));
+      emit(
+        state.copyWith(
+          weather: state.weather.copyWith(
+            temperature: Temperature(
+              value: state.weather.temperature.value,
+              units: units,
+            ),
+          ),
+        ),
+      );
       return;
     }
 
@@ -85,7 +92,6 @@ class WeatherCubit extends HydratedCubit<WeatherState> {
       emit(
         state.copyWith(
           weather: weather.copyWith(temperature: temperature),
-          temperatureUnits: units,
         ),
       );
     }
