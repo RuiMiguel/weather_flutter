@@ -8,6 +8,11 @@ part 'weather.g.dart';
 
 enum TemperatureUnits { fahrenheit, celsius }
 
+extension TemperatureUnitsX on TemperatureUnits {
+  bool get isFahrenheit => this == TemperatureUnits.fahrenheit;
+  bool get isCelsius => this == TemperatureUnits.celsius;
+}
+
 @JsonSerializable()
 class Temperature extends Equatable {
   const Temperature({required this.value});
@@ -23,6 +28,11 @@ class Temperature extends Equatable {
   Map<String, dynamic> toJson() => _$TemperatureToJson(this);
 }
 
+extension TemperatureX on Temperature {
+  Temperature get toFahrenheit => Temperature(value: (value * 9 / 5) + 32);
+  Temperature get toCelsius => Temperature(value: (value - 32) * 5 / 9);
+}
+
 @JsonSerializable()
 class Weather extends Equatable {
   const Weather({
@@ -34,6 +44,13 @@ class Weather extends Equatable {
 
   factory Weather.fromJson(Map<String, dynamic> json) =>
       _$WeatherFromJson(json);
+
+  factory Weather.fromRepository(weather_repository.Weather weather) => Weather(
+        condition: weather.condition,
+        lastUpdated: DateTime.now(),
+        location: weather.location,
+        temperature: Temperature(value: weather.temperature),
+      );
 
   static final empty = Weather(
     condition: WeatherCondition.unknown,
@@ -51,4 +68,17 @@ class Weather extends Equatable {
   List<Object?> get props => [condition, lastUpdated, location, temperature];
 
   Map<String, dynamic> toJson() => _$WeatherToJson(this);
+
+  Weather copyWith({
+    WeatherCondition? condition,
+    DateTime? lastUpdated,
+    String? location,
+    Temperature? temperature,
+  }) =>
+      Weather(
+        condition: condition ?? this.condition,
+        lastUpdated: lastUpdated ?? this.lastUpdated,
+        location: location ?? this.location,
+        temperature: temperature ?? this.temperature,
+      );
 }
