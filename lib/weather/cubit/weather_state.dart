@@ -2,6 +2,13 @@ part of 'weather_cubit.dart';
 
 enum WeatherStatus { initial, loading, success, failure }
 
+extension WeatherStatusX on WeatherStatus {
+  bool get isInitial => this == WeatherStatus.initial;
+  bool get isLoading => this == WeatherStatus.loading;
+  bool get isSuccess => this == WeatherStatus.success;
+  bool get isFailure => this == WeatherStatus.failure;
+}
+
 @JsonSerializable()
 class WeatherState extends Equatable {
   WeatherState({
@@ -21,4 +28,15 @@ class WeatherState extends Equatable {
   List<Object> get props => [];
 
   Map<String, dynamic> toJson() => _$WeatherStateToJson(this);
+
+  WeatherState copyWith({
+    WeatherStatus? status,
+    Weather? weather,
+    TemperatureUnits? temperatureUnits,
+  }) =>
+      WeatherState(
+        status: status ?? this.status,
+        weather: weather ?? this.weather,
+        temperatureUnits: temperatureUnits ?? this.temperatureUnits,
+      );
 }
