@@ -6,6 +6,7 @@ import 'package:weather_repository/weather_repository.dart'
 
 part 'weather.g.dart';
 
+//why don't separate temperature and weather into different files
 enum TemperatureUnits { fahrenheit, celsius }
 
 extension TemperatureUnitsX on TemperatureUnits {
@@ -28,6 +29,7 @@ class Temperature extends Equatable {
   Map<String, dynamic> toJson() => _$TemperatureToJson(this);
 }
 
+//better to define this as extension inistead of in cubit?
 extension TemperatureX on Temperature {
   Temperature get toFahrenheit => Temperature(value: (value * 9 / 5) + 32);
   Temperature get toCelsius => Temperature(value: (value - 32) * 5 / 9);
@@ -45,6 +47,7 @@ class Weather extends Equatable {
   factory Weather.fromJson(Map<String, dynamic> json) =>
       _$WeatherFromJson(json);
 
+  //why create factory method fromRepository instead of mapper extensions
   factory Weather.fromRepository(weather_repository.Weather weather) => Weather(
         condition: weather.condition,
         lastUpdated: DateTime.now(),
