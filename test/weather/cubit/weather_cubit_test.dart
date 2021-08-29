@@ -143,7 +143,66 @@ void main() {
       );
     });
 
-    group('refreshWeather', () {});
+    group('refreshWeather', () {
+      blocTest<WeatherCubit, WeatherState>(
+        'emits nothing when status is not success',
+        build: () => weatherCubit,
+        act: (cubit) => cubit.refreshWeather(),
+        expect: () => <WeatherState>[],
+        verify: (_) {
+          verifyNever(() => weatherRepository.getWeather(any()));
+        },
+      );
+
+      blocTest<WeatherCubit, WeatherState>(
+        'emits nothing when location is null',
+        seed: () => WeatherState(status: WeatherStatus.success),
+        build: () => weatherCubit,
+        act: (cubit) => cubit.refreshWeather(),
+        expect: () => <WeatherState>[],
+        verify: (_) {
+          verifyNever(() => weatherRepository.getWeather(any()));
+        },
+      );
+
+      blocTest<WeatherCubit, WeatherState>(
+        'emits nothing when exceptions is thrown',
+        build: () {
+          when(() => weatherRepository.getWeather(any()))
+              .thenThrow(Exception('oops'));
+          return weatherCubit;
+        },
+        seed: () => WeatherState(
+          status: WeatherStatus.success,
+          weather: Weather(
+            condition: weatherCondition,
+            lastUpdated: DateTime.now(),
+            location: weatherLocation,
+            temperature: const Temperature(value: weatherTemperature),
+          ),
+        ),
+        act: (cubit) => cubit.refreshWeather(),
+        expect: () => <WeatherState>[],
+      );
+
+      blocTest<WeatherCubit, WeatherState>(
+        'invokes getWeather with correct location',
+        build: () => weatherCubit,
+        seed: () => WeatherState(
+          status: WeatherStatus.success,
+          weather: Weather(
+            condition: weatherCondition,
+            lastUpdated: DateTime.now(),
+            location: weatherLocation,
+            temperature: const Temperature(value: weatherTemperature),
+          ),
+        ),
+        act: (cubit) => cubit.refreshWeather(),
+        verify: (_) {
+          verify(() => weatherRepository.getWeather(weatherLocation)).called(1);
+        },
+      );
+    });
 
     group('toggleUnits', () {});
   });
