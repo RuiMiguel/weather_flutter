@@ -29,6 +29,16 @@ class Temperature extends Equatable {
   List<Object?> get props => [value, units];
 
   Map<String, dynamic> toJson() => _$TemperatureToJson(this);
+
+  Temperature copyWith({
+    double? value,
+    TemperatureUnits? units,
+  }) {
+    return Temperature(
+      value: value ?? this.value,
+      units: units ?? this.units,
+    );
+  }
 }
 
 //better to define this as extension inistead of in cubit?
