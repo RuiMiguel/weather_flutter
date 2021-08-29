@@ -13,11 +13,83 @@ class WeatherCubit extends HydratedCubit<WeatherState> {
 
   final WeatherRepository _weatherRepository;
 
-  Future<void> fetchWeather(String? city) async {}
+  Future<void> fetchWeather(String? city) async {
+    if (city == null || city.isEmpty) return;
 
-  Future<void> refreshWeather() async {}
+    emit(state.copyWith(status: WeatherStatus.loading));
 
-  void toggleUnits() {}
+    try {
+      final weather = Weather.fromRepository(
+        await _weatherRepository.getWeather(city),
+      );
+
+      final units = state.temperatureUnits;
+      final temperature = units.isFahrenheit
+          ? weather.temperature.toFahrenheit
+          : weather.temperature;
+
+      emit(
+        state.copyWith(
+          status: WeatherStatus.success,
+          weather: weather.copyWith(temperature: temperature),
+          temperatureUnits: units,
+        ),
+      );
+    } on Exception {
+      emit(state.copyWith(status: WeatherStatus.failure));
+    }
+  }
+
+  Future<void> refreshWeather() async {
+    if (!state.status.isSuccess) return;
+    if (state.weather == Weather.empty) return;
+
+    try {
+      final weather = Weather.fromRepository(
+        await _weatherRepository.getWeather(state.weather.location),
+      );
+
+      final units = state.temperatureUnits;
+      final temperature = units.isFahrenheit
+          ? weather.temperature.toFahrenheit
+          : weather.temperature;
+
+      emit(
+        state.copyWith(
+          status: WeatherStatus.success,
+          weather: weather.copyWith(temperature: temperature),
+          temperatureUnits: units,
+        ),
+      );
+    } on Exception {
+      emit(state);
+    }
+  }
+
+  void toggleUnits() {
+    final units = state.temperatureUnits.isFahrenheit
+        ? TemperatureUnits.celsius
+        : TemperatureUnits.fahrenheit;
+
+    if (!state.status.isSuccess) {
+      emit(state.copyWith(temperatureUnits: units));
+      return;
+    }
+
+    final weather = state.weather;
+    if (weather != Weather.empty) {
+      final temperature = units.isCelsius
+          ? state.weather.temperature.toFahrenheit
+          : state.weather.temperature.toCelsius;
+
+      emit(
+        state.copyWith(
+          weather: weather.copyWith(temperature: temperature),
+          temperatureUnits: units,
+        ),
+      );
+    }
+  }
 
   @override
   WeatherState fromJson(Map<String, dynamic> json) =>
