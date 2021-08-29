@@ -48,12 +48,14 @@ class Weather extends Equatable {
       _$WeatherFromJson(json);
 
   //why create factory method fromRepository instead of mapper extensions
-  factory Weather.fromRepository(weather_repository.Weather weather) => Weather(
-        condition: weather.condition,
-        lastUpdated: DateTime.now(),
-        location: weather.location,
-        temperature: Temperature(value: weather.temperature),
-      );
+  factory Weather.fromRepository(weather_repository.Weather weather) {
+    return Weather(
+      condition: weather.condition,
+      lastUpdated: DateTime.now(),
+      location: weather.location,
+      temperature: Temperature(value: weather.temperature),
+    );
+  }
 
   static final empty = Weather(
     condition: WeatherCondition.unknown,
@@ -77,11 +79,12 @@ class Weather extends Equatable {
     DateTime? lastUpdated,
     String? location,
     Temperature? temperature,
-  }) =>
-      Weather(
-        condition: condition ?? this.condition,
-        lastUpdated: lastUpdated ?? this.lastUpdated,
-        location: location ?? this.location,
-        temperature: temperature ?? this.temperature,
-      );
+  }) {
+    return Weather(
+      condition: condition ?? this.condition,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
+      location: location ?? this.location,
+      temperature: temperature ?? this.temperature,
+    );
+  }
 }

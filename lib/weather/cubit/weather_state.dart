@@ -25,7 +25,7 @@ class WeatherState extends Equatable {
   final TemperatureUnits temperatureUnits;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [status, weather, temperatureUnits];
 
   Map<String, dynamic> toJson() => _$WeatherStateToJson(this);
 
@@ -33,10 +33,11 @@ class WeatherState extends Equatable {
     WeatherStatus? status,
     Weather? weather,
     TemperatureUnits? temperatureUnits,
-  }) =>
-      WeatherState(
-        status: status ?? this.status,
-        weather: weather ?? this.weather,
-        temperatureUnits: temperatureUnits ?? this.temperatureUnits,
-      );
+  }) {
+    return WeatherState(
+      status: status ?? this.status,
+      weather: weather ?? this.weather,
+      temperatureUnits: temperatureUnits ?? this.temperatureUnits,
+    );
+  }
 }
