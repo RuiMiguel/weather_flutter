@@ -16,23 +16,37 @@ extension TemperatureUnitsX on TemperatureUnits {
 
 @JsonSerializable()
 class Temperature extends Equatable {
-  const Temperature({required this.value});
+  const Temperature({required this.value, TemperatureUnits? units})
+      : units = units ?? TemperatureUnits.celsius;
 
   factory Temperature.fromJson(Map<String, dynamic> json) =>
       _$TemperatureFromJson(json);
 
   final double value;
+  final TemperatureUnits units;
 
   @override
-  List<Object?> get props => [value];
+  List<Object?> get props => [value, units];
 
   Map<String, dynamic> toJson() => _$TemperatureToJson(this);
+
+  Temperature copyWith({
+    double? value,
+    TemperatureUnits? units,
+  }) {
+    return Temperature(
+      value: value ?? this.value,
+      units: units ?? this.units,
+    );
+  }
 }
 
 //better to define this as extension inistead of in cubit?
 extension TemperatureX on Temperature {
-  Temperature get toFahrenheit => Temperature(value: (value * 9 / 5) + 32);
-  Temperature get toCelsius => Temperature(value: (value - 32) * 5 / 9);
+  Temperature get toFahrenheit => Temperature(
+      value: (value * 9 / 5) + 32, units: TemperatureUnits.fahrenheit);
+  Temperature get toCelsius =>
+      Temperature(value: (value - 32) * 5 / 9, units: TemperatureUnits.celsius);
 }
 
 @JsonSerializable()
@@ -53,7 +67,8 @@ class Weather extends Equatable {
       condition: weather.condition,
       lastUpdated: DateTime.now(),
       location: weather.location,
-      temperature: Temperature(value: weather.temperature),
+      temperature: Temperature(
+          value: weather.temperature, units: TemperatureUnits.celsius),
     );
   }
 
@@ -61,7 +76,7 @@ class Weather extends Equatable {
     condition: WeatherCondition.unknown,
     lastUpdated: DateTime(0),
     location: '--',
-    temperature: const Temperature(value: 0),
+    temperature: const Temperature(value: 0, units: TemperatureUnits.celsius),
   );
 
   final WeatherCondition condition;

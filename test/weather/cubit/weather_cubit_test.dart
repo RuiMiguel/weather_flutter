@@ -109,7 +109,9 @@ void main() {
                       .having(
                         (w) => w.temperature,
                         'temperature',
-                        const Temperature(value: weatherTemperature),
+                        const Temperature(
+                            value: weatherTemperature,
+                            units: TemperatureUnits.celsius),
                       )),
         ],
       );
@@ -117,13 +119,19 @@ void main() {
       blocTest<WeatherCubit, WeatherState>(
         'emits [loading, success] when getWeather returns (fahrenheit)',
         build: () => weatherCubit,
-        seed: () => WeatherState(temperatureUnits: TemperatureUnits.fahrenheit),
+        seed: () {
+          return WeatherState(
+            weather: Weather.empty.copyWith(
+              temperature: Weather.empty.temperature.copyWith(
+                units: TemperatureUnits.fahrenheit,
+              ),
+            ),
+          );
+        },
         act: (cubit) => cubit.fetchWeather(weatherLocation),
         expect: () => <dynamic>[
-          WeatherState(
-            status: WeatherStatus.loading,
-            temperatureUnits: TemperatureUnits.fahrenheit,
-          ),
+          isA<WeatherState>()
+              .having((w) => w.status, 'status', WeatherStatus.loading),
           isA<WeatherState>()
               .having((w) => w.status, 'status', WeatherStatus.success)
               .having(
@@ -136,8 +144,9 @@ void main() {
                       .having(
                         (w) => w.temperature,
                         'temperature',
-                        const Temperature(value: weatherTemperature)
-                            .toFahrenheit,
+                        const Temperature(
+                          value: weatherTemperature,
+                        ).toFahrenheit,
                       )),
         ],
       );
