@@ -7,21 +7,21 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  bloc: ^7.1.0
+  bloc: ^7.2.0
   equatable: ^2.0.3
   flutter:
     sdk: flutter
-  flutter_bloc: ^7.1.0
+  flutter_bloc: ^7.3.0
   flutter_localizations:
     sdk: flutter
-  hydrated_bloc: ^7.0.1
+  hydrated_bloc: ^7.1.0
   intl: ^0.17.0
   json_annotation: ^4.0.0
   weather_repository:
     path: packages/weather_repository
 
 dev_dependencies:
-  bloc_test: ^8.1.0
+  bloc_test: ^8.2.0
   build_runner: ^2.1.1
   flutter_test:
     sdk: flutter
