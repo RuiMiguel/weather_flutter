@@ -38,8 +38,6 @@ void main() {
         final response = MockResponse();
 
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
-        when(() => response.statusCode).thenReturn(200);
-        when(() => response.body).thenReturn('[]');
 
         try {
           await metaWeatherApiClient.locationSearch(query);
@@ -61,7 +59,6 @@ void main() {
 
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
         when(() => response.statusCode).thenReturn(400);
-        when(() => response.body).thenReturn('[]');
 
         await expectLater(
           metaWeatherApiClient.locationSearch(query),
@@ -123,8 +120,6 @@ void main() {
         final response = MockResponse();
 
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
-        when(() => response.statusCode).thenReturn(200);
-        when(() => response.body).thenReturn('{}');
 
         try {
           await metaWeatherApiClient.getWeather(locationId);
@@ -145,7 +140,6 @@ void main() {
 
         when(() => httpClient.get(any())).thenAnswer((_) async => response);
         when(() => response.statusCode).thenReturn(400);
-        when(() => response.body).thenReturn('{}');
 
         await expectLater(
           metaWeatherApiClient.getWeather(locationId),

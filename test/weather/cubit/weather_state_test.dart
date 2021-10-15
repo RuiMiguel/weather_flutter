@@ -2,6 +2,38 @@ import 'package:test/test.dart';
 import 'package:weather/weather/weather.dart';
 
 void main() {
+  group('WeatherState', () {
+    test('copyWith no changes', () {
+      final weatherState = WeatherState();
+      final copy = weatherState.copyWith();
+      expect(copy.status, weatherState.status);
+      expect(copy.weather, weatherState.weather);
+    });
+
+    test('copyWith changing status', () {
+      final weatherState = WeatherState();
+      final copy = weatherState.copyWith(status: WeatherStatus.loading);
+      expect(copy.status, WeatherStatus.loading);
+      expect(copy.weather, weatherState.weather);
+    });
+
+    test('copyWith changing weather', () {
+      final weather = Weather(
+        condition: WeatherCondition.cloudy,
+        lastUpdated: DateTime.now(),
+        location: 'Location',
+        temperature: const Temperature(
+          value: 10,
+          units: TemperatureUnits.celsius,
+        ),
+      );
+      final weatherState = WeatherState();
+      final copy = weatherState.copyWith(weather: weather);
+      expect(copy.status, weatherState.status);
+      expect(copy.weather, weather);
+    });
+  });
+
   group('WeatherStatusX', () {
     test('returns correct values for WeatherStatus.initial', () {
       const status = WeatherStatus.initial;

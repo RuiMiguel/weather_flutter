@@ -31,6 +31,7 @@ void main() {
     group('getWeather', () {
       const city = 'madrid';
       const woeid = 766273;
+      const temperature = 40.0;
 
       test('calls locationSearch with a city', () async {
         try {
@@ -70,15 +71,15 @@ void main() {
         expect(() => weatherRepository.getWeather(city), throwsA(exception));
       });
 
-      test('returns correct weatheron success (showers)', () async {
+      test('returns correct weather on success (showers)', () async {
         final location = MockLocation();
         final weather = MockWeather();
 
         when(() => location.woeid).thenReturn(woeid);
-        when(() => location.title).thenReturn('Madrid');
+        when(() => location.title).thenReturn(city);
         when(() => weather.weatherStateAbbr)
             .thenReturn(meta_weather_api.WeatherState.showers);
-        when(() => weather.theTemp).thenReturn(40);
+        when(() => weather.theTemp).thenReturn(temperature);
 
         when(() => metaWeatherApiClient.locationSearch(any()))
             .thenAnswer((_) async => location);
@@ -89,22 +90,22 @@ void main() {
         expect(
           actual,
           const Weather(
-            location: 'Madrid',
-            temperature: 40,
+            location: city,
+            temperature: temperature,
             condition: WeatherCondition.rainy,
           ),
         );
       });
 
-      test('returns correct weatheron success (heavyCloud)', () async {
+      test('returns correct weather on success (heavyCloud)', () async {
         final location = MockLocation();
         final weather = MockWeather();
 
         when(() => location.woeid).thenReturn(woeid);
-        when(() => location.title).thenReturn('Madrid');
+        when(() => location.title).thenReturn(city);
         when(() => weather.weatherStateAbbr)
             .thenReturn(meta_weather_api.WeatherState.heavyCloud);
-        when(() => weather.theTemp).thenReturn(40);
+        when(() => weather.theTemp).thenReturn(temperature);
 
         when(() => metaWeatherApiClient.locationSearch(any()))
             .thenAnswer((_) async => location);
@@ -115,8 +116,8 @@ void main() {
         expect(
           actual,
           const Weather(
-            location: 'Madrid',
-            temperature: 40,
+            location: city,
+            temperature: temperature,
             condition: WeatherCondition.cloudy,
           ),
         );
@@ -124,15 +125,15 @@ void main() {
 
       //don't understand why coverage needs
       //lightCloud and heavyCloud to cover 100%
-      test('returns correct weatheron success (lightCloud)', () async {
+      test('returns correct weather on success (lightCloud)', () async {
         final location = MockLocation();
         final weather = MockWeather();
 
         when(() => location.woeid).thenReturn(woeid);
-        when(() => location.title).thenReturn('Madrid');
+        when(() => location.title).thenReturn(city);
         when(() => weather.weatherStateAbbr)
             .thenReturn(meta_weather_api.WeatherState.lightCloud);
-        when(() => weather.theTemp).thenReturn(40);
+        when(() => weather.theTemp).thenReturn(temperature);
 
         when(() => metaWeatherApiClient.locationSearch(any()))
             .thenAnswer((_) async => location);
@@ -143,8 +144,8 @@ void main() {
         expect(
           actual,
           const Weather(
-            location: 'Madrid',
-            temperature: 40,
+            location: city,
+            temperature: temperature,
             condition: WeatherCondition.cloudy,
           ),
         );

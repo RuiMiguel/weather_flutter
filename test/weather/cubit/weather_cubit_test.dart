@@ -100,19 +100,20 @@ void main() {
           isA<WeatherState>()
               .having((w) => w.status, 'status', WeatherStatus.success)
               .having(
-                  (w) => w.weather,
-                  'weather',
-                  isA<Weather>()
-                      .having((w) => w.condition, 'condition', weatherCondition)
-                      .having((w) => w.lastUpdated, 'lastUpdated', isNotNull)
-                      .having((w) => w.location, 'location', weatherLocation)
-                      .having(
-                        (w) => w.temperature,
-                        'temperature',
-                        const Temperature(
-                            value: weatherTemperature,
-                            units: TemperatureUnits.celsius),
-                      )),
+                (w) => w.weather,
+                'weather',
+                isA<Weather>()
+                    .having((w) => w.condition, 'condition', weatherCondition)
+                    .having((w) => w.lastUpdated, 'lastUpdated', isNotNull)
+                    .having((w) => w.location, 'location', weatherLocation)
+                    .having(
+                      (w) => w.temperature,
+                      'temperature',
+                      const Temperature(
+                          value: weatherTemperature,
+                          units: TemperatureUnits.celsius),
+                    ),
+              ),
         ],
       );
 
@@ -135,19 +136,20 @@ void main() {
           isA<WeatherState>()
               .having((w) => w.status, 'status', WeatherStatus.success)
               .having(
-                  (w) => w.weather,
-                  'weather',
-                  isA<Weather>()
-                      .having((w) => w.condition, 'condition', weatherCondition)
-                      .having((w) => w.lastUpdated, 'lastUpdated', isNotNull)
-                      .having((w) => w.location, 'location', weatherLocation)
-                      .having(
-                        (w) => w.temperature,
-                        'temperature',
-                        const Temperature(
-                          value: weatherTemperature,
-                        ).toFahrenheit,
-                      )),
+                (w) => w.weather,
+                'weather',
+                isA<Weather>()
+                    .having((w) => w.condition, 'condition', weatherCondition)
+                    .having((w) => w.lastUpdated, 'lastUpdated', isNotNull)
+                    .having((w) => w.location, 'location', weatherLocation)
+                    .having(
+                      (w) => w.temperature,
+                      'temperature',
+                      const Temperature(
+                        value: weatherTemperature,
+                      ).toFahrenheit,
+                    ),
+              ),
         ],
       );
     });

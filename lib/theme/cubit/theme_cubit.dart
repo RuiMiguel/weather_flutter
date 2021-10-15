@@ -6,6 +6,7 @@ class ThemeCubit extends HydratedCubit<Color> {
   ThemeCubit() : super(defaultColor);
 
   static const defaultColor = Color(0xFF2196F3);
+  static const colorParam = 'color';
 
   void updateTheme(Weather? weather) {
     if (weather != null) emit(weather.toColor);
@@ -13,12 +14,12 @@ class ThemeCubit extends HydratedCubit<Color> {
 
   @override
   Color fromJson(Map<String, dynamic> json) {
-    return Color(int.parse(json['color'] as String));
+    return Color(int.parse(json[colorParam] as String));
   }
 
   @override
   Map<String, dynamic> toJson(Color state) {
-    return <String, String>{'color': '${state.value}'};
+    return <String, String>{colorParam: '${state.value}'};
   }
 }
 
