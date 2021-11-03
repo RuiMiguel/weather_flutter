@@ -6,26 +6,66 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:weather/counter/counter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:weather/l10n/l10n.dart';
+import 'package:weather/theme/theme.dart';
+import 'package:weather_repository/weather_repository.dart';
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  const App({Key? key, required WeatherRepository weatherRepository})
+      : _weatherRepository = weatherRepository,
+        super(key: key);
+
+  final WeatherRepository _weatherRepository;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        accentColor: const Color(0xFF13B9FF),
-        appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
+    return RepositoryProvider.value(
+      value: _weatherRepository,
+      child: BlocProvider(
+        create: (_) => ThemeCubit(),
+        child: const WeatherAppView(),
       ),
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-      ],
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: const CounterPage(),
+    );
+  }
+}
+
+class WeatherAppView extends StatelessWidget {
+  const WeatherAppView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return BlocBuilder<ThemeCubit, Color>(
+      builder: (context, color) {
+        return MaterialApp(
+          theme: ThemeData(
+            primaryColor: color,
+            textTheme: GoogleFonts.rajdhaniTextTheme(),
+            appBarTheme: AppBarTheme(
+              backgroundColor: color,
+              titleTextStyle: GoogleFonts.rajdhaniTextTheme(textTheme)
+                  .apply(bodyColor: Colors.white)
+                  .headline6,
+            ),
+          ),
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            appBar: AppBar(
+              title: const Text('Flutter Weather App'),
+            ),
+            body: Container(
+              child: Text('HOME'),
+            ),
+          ),
+        );
+      },
     );
   }
 }

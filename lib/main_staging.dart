@@ -13,6 +13,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:weather/app/app.dart';
 import 'package:weather/app/app_bloc_observer.dart';
+import 'package:weather_repository/weather_repository.dart';
 
 void main() {
   Bloc.observer = AppBlocObserver();
@@ -21,7 +22,11 @@ void main() {
   };
 
   runZonedGuarded(
-    () => runApp(const App()),
+    () => runApp(
+      App(
+        weatherRepository: WeatherRepository(),
+      ),
+    ),
     (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
   );
 }

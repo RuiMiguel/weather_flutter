@@ -5,7 +5,7 @@ import 'package:weather/weather/weather.dart';
 class ThemeCubit extends HydratedCubit<Color> {
   ThemeCubit() : super(defaultColor);
 
-  static const defaultColor = Color(0xFF2196F3);
+  static const defaultColor = Colors.amber; //Color(0xFF2196F3);
   static const colorParam = 'color';
 
   void updateTheme(Weather? weather) {

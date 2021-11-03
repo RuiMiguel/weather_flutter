@@ -14,9 +14,11 @@ dependencies:
   flutter_bloc: ^7.3.0
   flutter_localizations:
     sdk: flutter
+  google_fonts: ^2.1.0
   hydrated_bloc: ^7.1.0
   intl: ^0.17.0
   json_annotation: ^4.0.0
+  path_provider: ^2.0.6
   weather_repository:
     path: packages/weather_repository
 
