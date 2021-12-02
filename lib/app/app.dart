@@ -11,10 +11,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather/l10n/l10n.dart';
 import 'package:weather/theme/theme.dart';
+import 'package:weather/weather/view/weather_page.dart';
 import 'package:weather_repository/weather_repository.dart';
 
-class App extends StatelessWidget {
-  const App({Key? key, required WeatherRepository weatherRepository})
+class WeatherApp extends StatelessWidget {
+  const WeatherApp({Key? key, required WeatherRepository weatherRepository})
       : _weatherRepository = weatherRepository,
         super(key: key);
 
@@ -56,14 +57,7 @@ class WeatherAppView extends StatelessWidget {
             GlobalMaterialLocalizations.delegate,
           ],
           supportedLocales: AppLocalizations.supportedLocales,
-          home: Scaffold(
-            appBar: AppBar(
-              title: const Text('Flutter Weather App'),
-            ),
-            body: Container(
-              child: Text('HOME'),
-            ),
-          ),
+          home: const WeatherPage(),
         );
       },
     );
