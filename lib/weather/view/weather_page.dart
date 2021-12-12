@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather/search/search.dart';
+import 'package:weather/settings/settings.dart';
 import 'package:weather/theme/theme.dart';
 import 'package:weather/weather/weather.dart';
 import 'package:weather/weather/widgets/widgets.dart';
@@ -29,7 +30,9 @@ class WeatherView extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(SettingsPage.route());
+            },
           ),
         ],
       ),
@@ -61,6 +64,7 @@ class WeatherView extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(Icons.search),
         onPressed: () async {
           final city = await Navigator.of(context).push(SearchPage.route());

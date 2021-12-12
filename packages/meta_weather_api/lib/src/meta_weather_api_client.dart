@@ -25,7 +25,13 @@ class MetaWeatherApiClient {
       '/api/location/search',
       <String, String>{'query': query},
     );
-    final response = await _httpClient.get(request);
+    final response = await _httpClient.get(
+      request,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+      },
+    );
 
     if (response.statusCode != 200) {
       throw LocationRequestFailure();
