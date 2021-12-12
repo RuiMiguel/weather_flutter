@@ -13,7 +13,7 @@ class WeatherPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => WeatherCubit(context.read<WeatherRepository>()),
-      child: WeatherView(),
+      child: const WeatherView(),
     );
   }
 }
